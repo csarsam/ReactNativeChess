@@ -1,5 +1,5 @@
 'use strict';
-
+var Chess = require('./javascript/chess');
 var React = require('react-native');
 var Board = require('./javascript/board.ios');
 var {
@@ -10,9 +10,8 @@ var {
   Animation,
 } = React;
 var CONSTANTS = require('./javascript/constants.ios');
-var Engine = require('./javascript/engine');
 
-var engine;
+var game;
 
 var ReactChess = React.createClass({
   getInitialState: function() {
@@ -27,18 +26,17 @@ var ReactChess = React.createClass({
         <Text style={styles.turn}>
           {this.state.turn === CONSTANTS.WHITE ? 'White moves' : 'Black moves'}
         </Text>
-        <Board turn={this.state.turn} turnComplete={this.turnComplete} engine={engine}/>
+        <Board turn={this.state.turn} turnComplete={this.turnComplete} game={game}/>
       </View>
     );
   },
 
-  turnComplete: function turn (newBoard) {
-    engine.update(newBoard);
-    this.setState({ turn: this.state.turn === CONSTANTS.WHITE ? CONSTANTS.BLACK : CONSTANTS.WHITE });
+  turnComplete: function turn () {
+    this.setState({ turn: game.turn() === 'b' ? CONSTANTS.BLACK : CONSTANTS.WHITE });
   },
 
   componentWillMount: function() {
-    engine = new Engine(CONSTANTS.initialBoard);
+    game = new Chess();
   },
 
   componentDidMount: function() {

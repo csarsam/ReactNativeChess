@@ -8,88 +8,128 @@ var {
 var Square = require('./square.ios');
 var Piece = require('./piece.ios');
 var CONSTANTS = require('./constants.ios');
+var keys = [
+            [0, 1, 2, 3, 4, 5, 6, 7],
+            [8, 9, 10, 11, 12, 13, 14, 15],
+            [null, null, null, null, null, null, null, null],
+            [null, null, null, null, null, null, null, null],
+            [null, null, null, null, null, null, null, null],
+            [null, null, null, null, null, null, null, null],
+            [16, 17, 18, 19, 20, 21, 22, 23],
+            [24, 25, 26, 27, 28, 29, 30, 31]
+          ];
 
 var Board = React.createClass({
   getInitialState: function() {
     return {
-      board: CONSTANTS.initialBoard,
       selectedPiece: null
     };
   },
 
   render: function() {
-    var squares = [[],[],[],[],[],[],[],[]];
-    CONSTANTS.ROWS.map(function(row, rowIndex) {
-      CONSTANTS.COLUMNS.map(function(column, columnIndex) {
-        squares[rowIndex].push(
-            <Square column={columnIndex}
-                    row={rowIndex}
-                    piece={this.state.board[rowIndex][columnIndex]}
-                    selectable={this.state.selectedPiece != null}
-                    selected={this.state.selectedPiece != null ?
-                              this.state.selectedPiece.row == rowIndex &&
-                                this.state.selectedPiece.column == columnIndex ? true : false : false}
-                    onSquareSelect={this.onSquareSelected}
-                    key={row + column}/>
-          );
-      }.bind(this));
-    }.bind(this));
-    var rows = [];
-    CONSTANTS.ROWS.map(function(row, rowIndex) {
-      rows.push(
-          <View style={styles.row} key={'row ' + row}>
-            {squares[rowIndex]}
-          </View>
-        );
-    }.bind(this));
+    var squares = [], pieces = [];
+    var moves = [];
 
-    var pieces = [];
-    CONSTANTS.ROWS.map(function(row, rowIndex) {
-      CONSTANTS.COLUMNS.map(function(column, columnIndex) {
-        if (this.state.board[rowIndex][columnIndex] != null)
-          pieces.push(
-              <Piece
-                   piece={this.state.board[rowIndex][columnIndex].piece}
-                   color={this.state.board[rowIndex][columnIndex].color}
-                   key={this.state.board[rowIndex][columnIndex].key}
-                   column={columnIndex}
-                   row={rowIndex}
-                   selectable={this.props.turn === this.state.board[rowIndex][columnIndex].color}
-                   onPieceSelect={this.onPieceSelected}/>
+    var gameState = this.props.game.fen().split(' ')[0].split('/');
+
+    if (this.state.selectedPiece !== null) {
+      var currentSquare = { square:
+        CONSTANTS.COLUMNS[this.state.selectedPiece.column] + CONSTANTS.ROWS[this.state.selectedPiece.row],
+        verbose: true
+      };
+      moves = [];
+      this.props.game.moves(currentSquare).map(function(move) {
+        moves.push(move.to);
+      });
+      console.log(moves);
+    }
+
+    gameState.map(function(row, rowIndex) {
+      var column = 0;
+      for (var i = 0; i < row.length; i++) {
+        if (row.charAt(i).match(/\d/)) {
+          for (var j = 0; j < parseInt(row.charAt(i)); j++) {
+            squares.push(
+              <Square
+                column={column}
+                row={rowIndex}
+                selectable={this.state.selectedPiece !== null &&
+                            moves.indexOf(CONSTANTS.COLUMNS[column] + CONSTANTS.ROWS[rowIndex]) !== -1 }
+                selected={this.state.selectedPiece !== null &&
+                          this.state.selectedPiece.row === rowIndex &&
+                          this.state.selectedPiece.column === column}
+                onSquareSelect={this.onSquareSelected}
+                key={'s' + rowIndex + column}/>
             );
-      }.bind(this));
+            column++;
+          }
+        }
+        else if (row.charAt(i).match(/[A-Za-z]/)) {
+          squares.push(
+            <Square
+              column={column}
+              row={rowIndex}
+              selectable={this.state.selectedPiece !== null &&
+                          moves.indexOf(CONSTANTS.COLUMNS[column] + CONSTANTS.ROWS[rowIndex]) !== -1 }
+              selected={this.state.selectedPiece !== null &&
+                        this.state.selectedPiece.row === rowIndex &&
+                        this.state.selectedPiece.column === column}
+              onSquareSelect={this.onSquareSelected}
+              key={'s' + rowIndex + column}/>
+          );
+          color = row.charAt(i).match(/[A-Z]/) ? CONSTANTS.WHITE : CONSTANTS.BLACK;
+          key = color + row.charAt(i).toLowerCase();
+          pieces.push(
+            <Piece
+              piece={row.charAt(i).toLowerCase()}
+              key={keys[rowIndex][column]}
+              color={color}
+              column={column}
+              row={rowIndex}
+              selectable={this.props.turn === color ||
+                          moves.indexOf(CONSTANTS.COLUMNS[column] + CONSTANTS.ROWS[rowIndex]) !== -1 }
+              onPieceSelect={this.onPieceSelected}/>
+          );
+          column++;
+        }
+      }
     }.bind(this));
 
     return (
       <View style={styles.container}>
-        {rows.concat(pieces)}
+        {squares.concat(pieces)}
       </View>
     );
   },
 
-  onPieceSelected: function(row, column, piece, color) {
-    if (this.state.selectedPiece != null) {
-      if (this.state.selectedPiece.row != row || this.state.selectedPiece.column != column)
-        this.setState({ selectedPiece: {row: row, column: column} });
-      else
-        this.setState({ selectedPiece: null });
+  onPieceSelected: function(row, column, color) {
+    if (this.state.selectedPiece !== null) {
+      if (this.props.turn !== color) {
+        this.onSquareSelected(row, column);
+      } else {
+        if (this.state.selectedPiece.row !== row || this.state.selectedPiece.column !== column)
+          this.setState({ selectedPiece: {row: row, column: column} });
+        else
+          this.setState({ selectedPiece: null });
+      }
     } else {
       this.setState({ selectedPiece: {row: row, column: column} });
     }
   },
 
   onSquareSelected: function(row, column) {
-    if (this.state.selectedPiece == null) {
+    if (this.state.selectedPiece === null) {
       return;
     }
-    var validMoves = this.props.engine.validMoves['' + this.state.selectedPiece.row + this.state.selectedPiece.column];
-    if (validMoves.indexOf('' + row + column) !== -1) {
-      var newBoard = this.state.board;
-      newBoard[row][column] = this.state.board[this.state.selectedPiece.row][this.state.selectedPiece.column];
-      newBoard[this.state.selectedPiece.row][this.state.selectedPiece.column] = null;
-      this.setState({ board: newBoard, selectedPiece: null });
-      this.props.turnComplete(newBoard);
+    var move = {
+      from: CONSTANTS.COLUMNS[this.state.selectedPiece.column] + CONSTANTS.ROWS[this.state.selectedPiece.row],
+      to: CONSTANTS.COLUMNS[column] + CONSTANTS.ROWS[row]
+    };
+    if (this.props.game.move(move)) {
+      keys[row][column] = keys[this.state.selectedPiece.row][this.state.selectedPiece.column];
+      keys[this.state.selectedPiece.row][this.state.selectedPiece.column] = null;
     }
+    this.props.turnComplete();
   }
 });
 
@@ -98,14 +138,8 @@ var styles = StyleSheet.create({
     width: 375,
     height: 375,
     backgroundColor: '#F5FCFF',
-  },
-  row: {
-    width: 375,
-    height: 375/8,
     flexDirection: 'row',
-    alignItems: 'stretch',
-    flexWrap: 'nowrap',
-    flex: 1
+    flexWrap: 'wrap',
   }
 });
 

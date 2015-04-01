@@ -20,7 +20,7 @@ var Piece = React.createClass({
     };
 
     var onPress = function () {
-      this.props.onPieceSelect(this.props.row, this.props.column, this.props.piece, this.props.color);
+      this.props.onPieceSelect(this.props.row, this.props.column, this.props.color);
     }.bind(this);
 
     if (this.props.selectable)

@@ -1,5 +1,5 @@
 var COLUMNS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-var ROWS = [1, 2, 3, 4, 5, 6, 7, 8];
+var ROWS = [8, 7, 6, 5, 4, 3, 2, 1];
 
 var PIECES = ['p', 'b', 'c', 'n', 'k', 'q'];
 var PAWN = 'p', BISHOP = 'b', CASTLE = 'c', KNIGHT = 'n', KING = 'k', QUEEN = 'q';

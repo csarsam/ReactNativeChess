@@ -15,29 +15,24 @@ var Square = React.createClass({
       (this.props.row % 2 === 1 ? '#7F7E7E' : '#464646');
 
     var styles = {
-      backgroundColor: this.props.piece ? this.props.selected ? '#376060' : color : color,
-      alignSelf: 'stretch',
+      backgroundColor: this.props.selected ? '#376060' : color,
       width: 375/8,
       height: 375/8
     };
 
     var onPress = function () {
+      console.log(arguments);
       this.props.onSquareSelect(this.props.row, this.props.column);
     }.bind(this);
 
-    if (this.props.piece != null)
+    if (this.props.selectable) {
       return (
-        <View style={styles}>
-        </View>
-      );
-
-    else if (this.props.selectable)
-      return (
-        <TouchableHighlight onPress={onPress}>
-          <View style={styles}>
+        <TouchableHighlight style={styles} onPress={onPress}>
+          <View>
           </View>
         </TouchableHighlight>
       );
+    }
 
     else
       return (
