@@ -41,7 +41,6 @@ var Board = React.createClass({
       this.props.game.moves(currentSquare).map(function(move) {
         moves.push(move.to);
       });
-      console.log(moves);
     }
 
     gameState.map(function(row, rowIndex) {

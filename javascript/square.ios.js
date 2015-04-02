@@ -21,7 +21,6 @@ var Square = React.createClass({
     };
 
     var onPress = function () {
-      console.log(arguments);
       this.props.onSquareSelect(this.props.row, this.props.column);
     }.bind(this);
 
