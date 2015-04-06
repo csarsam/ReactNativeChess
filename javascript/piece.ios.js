@@ -10,7 +10,7 @@ const {
 const CONSTANTS = require('./constants.ios');
 
 const Piece = React.createClass({
-  render: function() {
+  render() {
     const containerStyle = {
       top: this.props.row * (375/8),
       left: this.props.column * (375/8)
@@ -43,7 +43,7 @@ const Piece = React.createClass({
       );
   },
 
-  componentWillUpdate: function(nextProps, nextState) {
+  componentWillUpdate(nextProps, nextState) {
     if (this.props.row != nextProps.row || this.props.column != nextProps.column) {
       const x = (375/8) * (nextProps.column + .5),
             y = (375/8) * (nextProps.row + .5);
@@ -69,7 +69,7 @@ const Piece = React.createClass({
     }
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     setTimeout(() => {
       Animation.startAnimation(this.refs['this'], 500, 0, 'easeInQuad', {opacity: 1});
     }, (150 * (7 - Math.abs(this.props.column - 3.5))));

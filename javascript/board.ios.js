@@ -21,13 +21,13 @@ var keys = [
           ];
 
 const Board = React.createClass({
-  getInitialState: () => {
+  getInitialState() {
     return {
       selectedPiece: null
     };
   },
 
-  render: function() {
+  render() {
     var squares = [], pieces = [];
     var moves = [];
 
@@ -102,7 +102,7 @@ const Board = React.createClass({
     );
   },
 
-  onPieceSelected: function(row, column, color) {
+  onPieceSelected(row, column, color) {
     if (this.state.selectedPiece !== null) {
       if (this.props.turn !== color) {
         this.onSquareSelected(row, column);
@@ -117,7 +117,7 @@ const Board = React.createClass({
     }
   },
 
-  onSquareSelected: function(row, column) {
+  onSquareSelected(row, column) {
     if (this.state.selectedPiece === null) {
       return;
     }

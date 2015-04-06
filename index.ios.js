@@ -15,13 +15,13 @@ var CONSTANTS = require('./javascript/constants.ios');
 var game;
 
 var ReactChess = React.createClass({
-  getInitialState: () => {
+  getInitialState() {
     return {
       turn: CONSTANTS.WHITE
     };
   },
 
-  render: function() {
+  render() {
     var history = game.history({ verbose: true });
     return (
       <View ref='this' style={styles.container}>
@@ -44,15 +44,15 @@ var ReactChess = React.createClass({
     );
   },
 
-  turnComplete: function turn() {
+  turnComplete() {
     this.setState({ turn: game.turn() === 'b' ? CONSTANTS.BLACK : CONSTANTS.WHITE });
   },
 
-  componentWillMount: () => {
+  componentWillMount() {
     game = new Chess();
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     setTimeout(() => {
       Animation.startAnimation(this.refs['this'], 300, 0, 'easeInOutQuad', {opacity: 1});
     }, 0);

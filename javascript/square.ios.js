@@ -9,7 +9,7 @@ const {
 const CONSTANTS = require('./constants.ios');
 
 const Square = React.createClass({
-  render: function() {
+  render() {
     const color = this.props.column % 2 === 1 ?
       (this.props.row % 2 === 1 ? '#464646' : '#7F7E7E') :
       (this.props.row % 2 === 1 ? '#7F7E7E' : '#464646');
@@ -20,9 +20,9 @@ const Square = React.createClass({
       height: 375/8
     };
 
-    const onPress = function() {
+    const onPress = () => {
       this.props.onSquareSelect(this.props.row, this.props.column);
-    }.bind(this);
+    };
 
     if (this.props.selectable) {
       return (
