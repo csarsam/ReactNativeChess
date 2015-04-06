@@ -1,13 +1,14 @@
-var React = require('react-native');
-var {
+const React = require('react-native');
+const {
   AppRegistry,
   StyleSheet,
   Text,
   View
 } = React;
-var Square = require('./square.ios');
-var Piece = require('./piece.ios');
-var CONSTANTS = require('./constants.ios');
+const Square = require('./square.ios');
+const Piece = require('./piece.ios');
+const CONSTANTS = require('./constants.ios');
+
 var keys = [
             [0, 1, 2, 3, 4, 5, 6, 7],
             [8, 9, 10, 11, 12, 13, 14, 15],
@@ -19,7 +20,7 @@ var keys = [
             [24, 25, 26, 27, 28, 29, 30, 31]
           ];
 
-var Board = React.createClass({
+const Board = React.createClass({
   getInitialState: () => {
     return {
       selectedPiece: null
@@ -30,10 +31,10 @@ var Board = React.createClass({
     var squares = [], pieces = [];
     var moves = [];
 
-    var gameState = this.props.game.fen().split(' ')[0].split('/');
+    const gameState = this.props.game.fen().split(' ')[0].split('/');
 
     if (this.state.selectedPiece !== null) {
-      var currentSquare = { square:
+      const currentSquare = { square:
         CONSTANTS.COLUMNS[this.state.selectedPiece.column] + CONSTANTS.ROWS[this.state.selectedPiece.row],
         verbose: true
       };
@@ -120,7 +121,7 @@ var Board = React.createClass({
     if (this.state.selectedPiece === null) {
       return;
     }
-    var move = {
+    const move = {
       from: CONSTANTS.COLUMNS[this.state.selectedPiece.column] + CONSTANTS.ROWS[this.state.selectedPiece.row],
       to: CONSTANTS.COLUMNS[column] + CONSTANTS.ROWS[row]
     };
@@ -132,7 +133,7 @@ var Board = React.createClass({
   }
 });
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     width: 375,
     height: 375,

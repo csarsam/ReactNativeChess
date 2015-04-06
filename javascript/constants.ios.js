@@ -1,12 +1,12 @@
-var COLUMNS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-var ROWS = [8, 7, 6, 5, 4, 3, 2, 1];
+const COLUMNS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+const ROWS = [8, 7, 6, 5, 4, 3, 2, 1];
 
-var PIECES = ['p', 'b', 'c', 'n', 'k', 'q'];
-var PAWN = 'p', BISHOP = 'b', CASTLE = 'c', KNIGHT = 'n', KING = 'k', QUEEN = 'q';
-var BLACK = '#000000';
-var WHITE = '#FFFFFF';
+const PIECES = ['p', 'b', 'c', 'n', 'k', 'q'];
+const PAWN = 'p', BISHOP = 'b', CASTLE = 'c', KNIGHT = 'n', KING = 'k', QUEEN = 'q';
+const BLACK = '#000000';
+const WHITE = '#FFFFFF';
 
-var initialBoard = [
+const initialBoard = [
   [
     { piece: CASTLE, color: WHITE, key: 0 },
     { piece: KNIGHT, color: WHITE, key: 1 },

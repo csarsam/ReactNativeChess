@@ -1,5 +1,5 @@
-var React = require('react-native');
-var {
+const React = require('react-native');
+const {
   AppRegistry,
   StyleSheet,
   Text,
@@ -7,21 +7,21 @@ var {
   Animation,
   View
 } = React;
-var CONSTANTS = require('./constants.ios');
+const CONSTANTS = require('./constants.ios');
 
-var Piece = React.createClass({
+const Piece = React.createClass({
   render: function() {
-    var containerStyle = {
+    const containerStyle = {
       top: this.props.row * (375/8),
       left: this.props.column * (375/8)
     };
-    var textStyle = {
+    const textStyle = {
       color: this.props.color
     };
 
-    var onPress = function() {
+    const onPress = () => {
       this.props.onPieceSelect(this.props.row, this.props.column, this.props.color);
-    }.bind(this);
+    };
 
     if (this.props.selectable)
       return (
@@ -45,13 +45,12 @@ var Piece = React.createClass({
 
   componentWillUpdate: function(nextProps, nextState) {
     if (this.props.row != nextProps.row || this.props.column != nextProps.column) {
-      var x, y;
-      x = (375/8) * (nextProps.column + .5);
-      y = (375/8) * (nextProps.row + .5);
+      const x = (375/8) * (nextProps.column + .5),
+            y = (375/8) * (nextProps.row + .5);
 
       if (this.props.piece === CONSTANTS.KNIGHT) {
-        var diffX = Math.abs(this.props.column - nextProps.column),
-            diffY = Math.abs(this.props.row - nextProps.row);
+        const diffX = Math.abs(this.props.column - nextProps.column),
+              diffY = Math.abs(this.props.row - nextProps.row);
         var midX, midY;
         if (Math.max(diffX, diffY) === diffX) {
           midX = (375/8) * (nextProps.column + .5);
@@ -80,7 +79,7 @@ var Piece = React.createClass({
   }
 });
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
       position: 'absolute',
       width: 375/8,
