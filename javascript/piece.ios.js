@@ -19,7 +19,7 @@ var Piece = React.createClass({
       color: this.props.color
     };
 
-    var onPress = function () {
+    var onPress = function() {
       this.props.onPieceSelect(this.props.row, this.props.column, this.props.color);
     }.bind(this);
 

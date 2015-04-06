@@ -20,7 +20,7 @@ var Square = React.createClass({
       height: 375/8
     };
 
-    var onPress = function () {
+    var onPress = function() {
       this.props.onSquareSelect(this.props.row, this.props.column);
     }.bind(this);
 

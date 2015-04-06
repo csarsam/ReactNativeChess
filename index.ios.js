@@ -15,7 +15,7 @@ var CONSTANTS = require('./javascript/constants.ios');
 var game;
 
 var ReactChess = React.createClass({
-  getInitialState: function() {
+  getInitialState: () => {
     return {
       turn: CONSTANTS.WHITE
     };
@@ -30,24 +30,25 @@ var ReactChess = React.createClass({
             game.in_checkmate() ?
               this.state.turn === CONSTANTS.WHITE ?
                 'White is in checkmate' : 'Black is in checkmate' :
-                'The game has ended in ' + game.in_checkmate() : 
+                `The game has ended in ${game.in_checkmate()}` : 
               this.state.turn === CONSTANTS.WHITE ? 'White moves' : 'Black moves'}
         </Text>
 
         <Board turn={this.state.turn} turnComplete={this.turnComplete} game={game}/>
 
         <Text style={styles.history}>
-          {history.length > 0 ? history[history.length - 1].to + ' => ' + history[history.length - 1].from : ''}
+          {history.length > 0 ?
+            `${history[history.length - 1].to} => ${history[history.length - 1].from}` : ''}
         </Text>
       </View>
     );
   },
 
-  turnComplete: function turn () {
+  turnComplete: function turn() {
     this.setState({ turn: game.turn() === 'b' ? CONSTANTS.BLACK : CONSTANTS.WHITE });
   },
 
-  componentWillMount: function() {
+  componentWillMount: () => {
     game = new Chess();
   },
 

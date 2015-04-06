@@ -20,7 +20,7 @@ var keys = [
           ];
 
 var Board = React.createClass({
-  getInitialState: function() {
+  getInitialState: () => {
     return {
       selectedPiece: null
     };
@@ -38,12 +38,12 @@ var Board = React.createClass({
         verbose: true
       };
       moves = [];
-      this.props.game.moves(currentSquare).map(function(move) {
+      this.props.game.moves(currentSquare).map((move) => {
         moves.push(move.to);
       });
     }
 
-    gameState.map(function(row, rowIndex) {
+    gameState.map((row, rowIndex) => {
       var column = 0;
       for (var i = 0; i < row.length; i++) {
         if (row.charAt(i).match(/\d/)) {
@@ -92,7 +92,7 @@ var Board = React.createClass({
           column++;
         }
       }
-    }.bind(this));
+    });
 
     return (
       <View style={styles.container}>
