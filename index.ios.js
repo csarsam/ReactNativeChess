@@ -1,7 +1,5 @@
 'use strict';
-var Chess = require('./javascript/chess');
 var React = require('react-native');
-var Board = require('./javascript/board.ios');
 var {
   AppRegistry,
   StyleSheet,
@@ -9,6 +7,9 @@ var {
   View,
   Animation,
 } = React;
+
+var Chess = require('./javascript/chess');
+var Board = require('./javascript/board.ios');
 var CONSTANTS = require('./javascript/constants.ios');
 
 var game;
@@ -32,9 +33,11 @@ var ReactChess = React.createClass({
                 'The game has ended in ' + game.in_checkmate() : 
               this.state.turn === CONSTANTS.WHITE ? 'White moves' : 'Black moves'}
         </Text>
+
         <Board turn={this.state.turn} turnComplete={this.turnComplete} game={game}/>
+
         <Text style={styles.history}>
-          {history.length > 0 ? history[history.length - 1].to + " => " + history[history.length - 1].from : ''}
+          {history.length > 0 ? history[history.length - 1].to + ' => ' + history[history.length - 1].from : ''}
         </Text>
       </View>
     );
